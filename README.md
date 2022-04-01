@@ -1,1 +1,1 @@
-# korge-boot
+# KorGE Boot
