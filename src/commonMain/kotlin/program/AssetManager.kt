@@ -6,6 +6,7 @@ import com.soywiz.korge.tiled.TiledMap
 import com.soywiz.korge.tiled.readTiledMap
 import com.soywiz.korge.view.SolidRect
 import com.soywiz.korge.view.SpriteAnimation
+import com.soywiz.korge.view.anchor
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.color.Colors
 import com.soywiz.korim.font.Font

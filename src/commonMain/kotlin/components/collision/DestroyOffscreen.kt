@@ -11,12 +11,17 @@ import program.Log
 /**
  * Destroy game entities that get off-screen
  */
-class DestroyOffscreen(override val view: GameEntity, val views: Views)
-    : FixedUpdateComponent(view, 50.milliseconds) {
+class DestroyOffscreen(override val view: GameEntity, val views: Views, val padding: Double = 12.0) :
+    FixedUpdateComponent(view, 50.milliseconds) {
     override fun update() {
         val bounds = view.getCurrentBounds()
         val cameraBounds =
-            Rectangle(0.0, 0.0, views.virtualWidth.toDouble(), views.virtualHeight.toDouble())
+            Rectangle(
+                -padding,
+                -padding,
+                views.virtualWidth.toDouble() + padding,
+                views.virtualHeight.toDouble() + padding
+            )
 
         if (!cameraBounds.contains(bounds)) {
             if (view is Player) {

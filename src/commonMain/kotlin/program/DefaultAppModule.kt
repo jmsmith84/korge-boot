@@ -1,6 +1,7 @@
 package program
 
 import com.soywiz.korge.scene.Module
+import com.soywiz.korge.view.Sprite
 import com.soywiz.korim.color.Colors
 import com.soywiz.korinject.AsyncInjector
 import com.soywiz.korma.geom.*
@@ -24,6 +25,6 @@ open class DefaultAppModule(override val title: String = "KorGE Boot Game", wind
         mapSingleton { LevelManager(get()) }
 
         mapPrototype { GameScene() }
-        mapPrototype { Player(get(), get(), get(), get()) }
+        mapPrototype { Player(Sprite(get<AssetManager>().playerIdleAnimation), get(), get(), get()) }
     }
 }

@@ -1,18 +1,17 @@
 package scenes
 
-import com.soywiz.klock.DateTime
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.keys
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.tiled.TiledMapView
-import com.soywiz.korge.view.*
+import com.soywiz.korge.view.Container
+import com.soywiz.korge.view.addUpdater
+import com.soywiz.korge.view.position
 import com.soywiz.korma.geom.Point
-import com.soywiz.korma.math.clamp
 import containers.GameEntity
 import containers.enemy.TestEnemy
 import containers.player.Player
 import program.*
-import utility.*
 
 open class GameScene : Scene() {
     private lateinit var assets: AssetManager
@@ -34,12 +33,10 @@ open class GameScene : Scene() {
         levelManager.setNewMap(1u, this)
         mapView = levelManager.getCurrentMapView()
 
-//        val particlesView = particleEmitter(assets.starbeamParticle, Point(views.virtualWidth * 0.5, views.virtualHeight * 0.5),
-//            2.seconds)
-
         player = injector.get()
         resetGame()
 
+        mapView.addChild(player)
         mapView.addChild(TestEnemy(injector.get(), injector.get(), injector.get(), injector.get(), Point(50, 50)))
 
         keys.down {
@@ -57,8 +54,10 @@ open class GameScene : Scene() {
     }
 
     protected fun resetGame() {
+        mapView.x = 0.0
         mapView.y = 0.0
         GameState.score = 0
+
         mapView.forEachChild {
             if (it is GameEntity && it !is Player) {
                 it.removeFromParent()
@@ -72,7 +71,6 @@ open class GameScene : Scene() {
             player.position(it.x, it.y)
         }
 
-        mapView.addChild(player)
         Log().debug { "Player spawn @ ${player.pos}" }
     }
 

@@ -8,6 +8,7 @@ import containers.GameEntity
 import program.LevelManager
 import program.Log
 import utility.*
+import kotlin.math.round
 
 class MovesWithTilemapCollision(
     override val view: GameEntity,
@@ -19,12 +20,12 @@ class MovesWithTilemapCollision(
 
         if (view.move.isMovingLeft() || view.move.isMovingRight()) {
             val oldX = view.x
-            view.x += view.move.x * delta
+            view.x += round(view.move.x * delta)
 
             if (mapView.viewHitTest(view, HitTestDirection.LEFT) !== null
                 || mapView.viewHitTest(view, HitTestDirection.RIGHT) !== null
             ) {
-                Log().debug { "map hit X " + DateTime.nowUnix() }
+                Log().debug { "map hit X " + view.pos }
 
                 if (view.move.isMovingLeft()) {
                     while (mapView.viewHitTest(view, HitTestDirection.LEFT) !== null
@@ -45,12 +46,12 @@ class MovesWithTilemapCollision(
 
         if (view.move.isMovingUp() || view.move.isMovingDown()) {
             val oldY = view.y
-            view.y += view.move.y * delta
+            view.y += round(view.move.y * delta)
 
             if (mapView.viewHitTest(view, HitTestDirection.UP) !== null
                 || mapView.viewHitTest(view, HitTestDirection.DOWN) !== null
             ) {
-                Log().debug { "map hit Y " + DateTime.nowUnix() }
+                Log().debug { "map hit Y " + view.pos }
 
                 if (view.move.isMovingUp()) {
                     while (mapView.viewHitTest(view, HitTestDirection.UP) !== null

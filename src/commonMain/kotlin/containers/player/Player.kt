@@ -6,6 +6,7 @@ import com.soywiz.korio.dynamic.dyn
 import com.soywiz.korma.geom.Point
 import com.soywiz.korma.geom.centerX
 import com.soywiz.korma.geom.centerY
+import com.soywiz.korma.geom.shape.Shape2d
 import components.collision.MovesWithTilemapCollision
 import components.input.HorizontalMoveInput
 import components.input.ShootBulletsInput
@@ -26,12 +27,12 @@ import kotlin.time.Duration.Companion.seconds
 const val PLAYER_NAME = "PLAYER"
 
 open class Player(
+    sprite: Sprite,
     assets: AssetManager,
     soundManager: SoundManager,
     levelManager: LevelManager,
-    views: Views,
     var maxSpeed: Double = 2.0
-) : SpriteEntity(Sprite(assets.playerIdleAnimation), assets, soundManager, levelManager) {
+) : SpriteEntity(sprite, assets, soundManager, levelManager) {
     private val initialHp = hp
     private val shootTimer = SimpleTimer(this, 0.33.seconds).attach().start()
     private val jumpTimer = SimpleTimer(this, 0.4.seconds).attach()
@@ -41,18 +42,17 @@ open class Player(
     init {
         name = PLAYER_NAME
 
-        //bounds(4.0,0.0,12.0,16.0)
-        //hitShape2d = Shape2d.Rectangle(0, 0, 16, 16)
+        //sprite.bounds(4.0,1.0,13.0,15.0)
+        //hitShape2d = Shape2d.Rectangle(0, 0, 12, 12)
         HorizontalMoveInput(
             this,
-            views.input,
             assets.playerWalkLeftAnimation,
             assets.playerWalkRightAnimation
         ).attach()
+        ClampMovement(this, Point(maxSpeed, maxSpeed)).attach()
         MovesWithTilemapCollision(this, levelManager).attach()
         HasGravity(this, maxSpeed).attach()
-        ClampMovement(this, Point(maxSpeed, maxSpeed)).attach()
-        ShootBulletsInput(this, views.input).attach()
+        ShootBulletsInput(this).attach()
 
         onCollision {
             if (it is Enemy || it is EnemyBullet) {
@@ -101,12 +101,12 @@ open class Player(
             var target = Point.Zero
             when (shootDirection) {
                 MoveDirection.UP -> {
-                    spawn = Point(getCurrentBounds().centerX, getCurrentBounds().top)
-                    target = Point(getCurrentBounds().centerX, getCurrentBounds().top + 100)
+                    spawn = Point(getCurrentBounds().centerX, getCurrentBounds().top - 4)
+                    target = Point(getCurrentBounds().centerX, getCurrentBounds().top - 100)
                 }
                 MoveDirection.DOWN -> {
-                    spawn = Point(getCurrentBounds().centerX, getCurrentBounds().bottom)
-                    target = Point(getCurrentBounds().centerX, getCurrentBounds().bottom - 100)
+                    spawn = Point(getCurrentBounds().centerX, getCurrentBounds().bottom + 4)
+                    target = Point(getCurrentBounds().centerX, getCurrentBounds().bottom + 100)
                 }
                 MoveDirection.LEFT -> {
                     spawn = Point(getCurrentBounds().left, getCurrentBounds().centerY)

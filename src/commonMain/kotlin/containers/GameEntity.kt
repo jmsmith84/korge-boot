@@ -7,10 +7,8 @@ import com.soywiz.korma.geom.Point
 import com.soywiz.korma.geom.Rectangle
 import program.AssetManager
 import program.LevelManager
-import program.Log
 import program.SoundManager
 import utility.rectHitTest
-import utility.viewHitTest
 
 open class GameEntity(
     protected val assets: AssetManager,
@@ -28,7 +26,6 @@ open class GameEntity(
     fun isTouchingGround(): Boolean {
         val clone = getCurrentBounds().clone()
         clone.y++
-        val truth = levelManager.getCurrentMapView().rectHitTest(clone, HitTestDirection.DOWN) !== null
-        return truth
+        return levelManager.getCurrentMapView().rectHitTest(clone, HitTestDirection.DOWN) !== null
     }
 }

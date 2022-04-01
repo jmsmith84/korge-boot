@@ -72,30 +72,30 @@ fun TiledMapView.rectHitTest(rect: Rectangle, direction: HitTestDirection = HitT
     var hit: View?
     when (direction) {
         HitTestDirection.DOWN -> {
-            for (x: Int in rect.left.toInt() .. rect.right.toInt()) {
+            for (x: Int in rect.left.toInt() until rect.right.toInt()) {
                 Log().debug { "DOWN ${x},${rect.bottom.toInt()}" }
-                hit = pixelHitTest(x, rect.bottom.toInt(), direction)
+                hit = pixelHitTest(x, rect.bottom.toInt() - 1, direction)
                 if (hit !== null) return hit
             }
         }
         HitTestDirection.UP -> {
-            for (x: Int in rect.left.toInt() .. rect.right.toInt()) {
+            for (x: Int in rect.left.toInt() until rect.right.toInt()) {
                 Log().debug { "UP ${x},${rect.top.toInt()}" }
                 hit = pixelHitTest(x, rect.top.toInt(), direction)
                 if (hit !== null) return hit
             }
         }
         HitTestDirection.LEFT -> {
-            for (y: Int in rect.top.toInt() .. rect.bottom.toInt()) {
+            for (y: Int in rect.top.toInt() until rect.bottom.toInt()) {
                 Log().debug { "LEFT ${rect.left.toInt()},${y}" }
                 hit = pixelHitTest(rect.left.toInt(), y, direction)
                 if (hit !== null) return hit
             }
         }
         HitTestDirection.RIGHT -> {
-            for (y: Int in rect.top.toInt() .. rect.bottom.toInt()) {
+            for (y: Int in rect.top.toInt() until rect.bottom.toInt()) {
                 Log().debug { "RIGHT ${rect.right.toInt()},${y}" }
-                hit = pixelHitTest(rect.right.toInt(), y, direction)
+                hit = pixelHitTest(rect.right.toInt() - 1, y, direction)
                 if (hit !== null) return hit
             }
         }
