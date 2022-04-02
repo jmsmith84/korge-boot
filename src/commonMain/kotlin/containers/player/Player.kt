@@ -42,8 +42,6 @@ open class Player(
     init {
         name = PLAYER_NAME
 
-        //sprite.bounds(4.0,1.0,13.0,15.0)
-        //hitShape2d = Shape2d.Rectangle(0, 0, 12, 12)
         HorizontalMoveInput(
             this,
             assets.playerWalkLeftAnimation,

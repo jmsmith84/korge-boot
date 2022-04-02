@@ -6,24 +6,18 @@ import com.soywiz.korge.tiled.TiledMap
 import com.soywiz.korge.tiled.readTiledMap
 import com.soywiz.korge.view.SolidRect
 import com.soywiz.korge.view.SpriteAnimation
-import com.soywiz.korge.view.anchor
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.color.Colors
 import com.soywiz.korim.font.Font
 import com.soywiz.korim.font.readFont
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korinject.AsyncDependency
+import com.soywiz.korinject.injector
 import com.soywiz.korio.file.std.resourcesVfs
 
-const val mapsDir = "maps"
-const val fontsDir = "fonts"
-const val soundsDir = "audio"
-const val graphicsDir = "sprites"
-const val particlesDir = "particles"
-
-class AssetManager : AsyncDependency {
-    lateinit var levels: MutableMap<UShort, TiledMap>
-    lateinit var font: Font
+class AssetManager : AsyncDependency, IAssetManager {
+    override lateinit var levels: MutableMap<UShort, TiledMap>
+    override lateinit var defaultFont: Font
 
     lateinit var music01: Sound
     lateinit var pickupSfx: Sound
@@ -39,21 +33,24 @@ class AssetManager : AsyncDependency {
 
     lateinit var starbeamParticle: ParticleEmitter
 
+    override lateinit var playerIdleAnimation: SpriteAnimation
     lateinit var playerWalkRightAnimation: SpriteAnimation
-    lateinit var playerIdleAnimation: SpriteAnimation
     lateinit var playerWalkLeftAnimation: SpriteAnimation
 
     override suspend fun init() {
+        val config = injector().get<Config>()
+        val dirs = getResourceSubdirs(config)
+
         bulletRect = SolidRect(4, 4, Colors.WHITE)
         enemyBulletRect = SolidRect(4, 4, Colors.YELLOW)
 
-        font = resourcesVfs["${fontsDir}/pressStart2p.ttf"].readFont()
+        defaultFont = resourcesVfs["${dirs["fonts"]}/pressStart2p.ttf"].readFont()
 
         levels = mutableMapOf()
-        levels[1u] = resourcesVfs["${mapsDir}/level001.tmx"].readTiledMap()
+        levels[1u] = resourcesVfs["${dirs["maps"]}/level001.tmx"].readTiledMap()
 
-        playerBitmap = resourcesVfs["${graphicsDir}/player01.png"].readBitmap()
-        playerWalkBitmap = resourcesVfs["${graphicsDir}/playerwalk-right.png"].readBitmap()
+        playerBitmap = resourcesVfs["${dirs["graphics"]}/player01.png"].readBitmap()
+        playerWalkBitmap = resourcesVfs["${dirs["graphics"]}/playerwalk-right.png"].readBitmap()
 
         //starbeamParticle = resourcesVfs["${particlesDir}/starbeam/particle.pex"].readParticleEmitter()
         //playerDeathBitmap = resourcesVfs["${graphicsDir}/handship_dead.png"].readBitmap()

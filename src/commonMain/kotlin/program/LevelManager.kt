@@ -5,7 +5,7 @@ import com.soywiz.korge.tiled.TiledMapView
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.addTo
 
-class LevelManager(private val assets: AssetManager) {
+class LevelManager(private val assets: IAssetManager) {
     var mapView: TiledMapView? = null
     var smoothing = false
     private var currentLevel: UShort = 0u

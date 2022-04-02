@@ -7,6 +7,7 @@ import com.soywiz.korge.tiled.TiledMapView
 import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.addUpdater
 import com.soywiz.korge.view.position
+import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korma.geom.Point
 import containers.GameEntity
 import containers.enemy.TestEnemy
@@ -14,12 +15,12 @@ import containers.player.Player
 import program.*
 
 open class GameScene : Scene() {
-    private lateinit var assets: AssetManager
-    private lateinit var soundManager: SoundManager
-    private lateinit var config: Config
-    private lateinit var mapView: TiledMapView
-    private lateinit var player: Player
-    private lateinit var levelManager: LevelManager
+    protected lateinit var assets: IAssetManager
+    protected lateinit var soundManager: SoundManager
+    protected lateinit var config: Config
+    protected lateinit var mapView: TiledMapView
+    protected lateinit var player: Player
+    protected lateinit var levelManager: LevelManager
 
     override suspend fun Container.sceneInit() {
         config = injector.get()
@@ -41,16 +42,18 @@ open class GameScene : Scene() {
 
         keys.down {
             when (it.key) {
-                Key.ESCAPE -> exitGame()
-                //Key.R -> resetGame()
+                Key.ESCAPE -> exitToMenu()
+                Key.R -> resetGame()
                 Key.Z -> player.jump()
                 else -> Unit
             }
         }
     }
 
-    protected fun exitGame() {
-        views.gameWindow.close()
+    protected fun exitToMenu() {
+        launchImmediately {
+            sceneContainer.changeTo<MenuScene>()
+        }
     }
 
     protected fun resetGame() {
