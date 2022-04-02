@@ -14,7 +14,7 @@ enum class MainMenuOptions {
     QUIT
 }
 
-class MenuScene(private val title: String, private val fontsize: Double = 24.0) : Scene() {
+open class MenuScene(private val title: String, private val fontsize: Double = 24.0) : Scene() {
     private lateinit var assets: IAssetManager
     private lateinit var levelManager: LevelManager
 
@@ -27,7 +27,7 @@ class MenuScene(private val title: String, private val fontsize: Double = 24.0) 
         levelManager = injector.get()
 
         val uiFont = assets.defaultFont
-        //val center = sceneView.centerOnStage()
+
         text(title) {
             font = uiFont
             y = 24.0

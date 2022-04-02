@@ -17,20 +17,5 @@ buildscript {
 apply<KorgeGradlePlugin>()
 
 korge {
-	id = "com.redhue.wizjump"
-
-// To enable all targets at once
-
-	//targetAll()
-
-// To enable targets based on properties/environment variables
-	//targetDefault()
-
-// To selectively enable targets
-
-	targetJvm()
-	targetJs()
-	targetDesktop()
-	//targetAndroidDirect()
-	//targetAndroidDirect()
+	id = "com.redhue.korge-boot"
 }
