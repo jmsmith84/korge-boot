@@ -8,9 +8,7 @@ import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.addUpdater
 import com.soywiz.korge.view.position
 import com.soywiz.korio.async.launchImmediately
-import com.soywiz.korma.geom.Point
 import containers.GameEntity
-import containers.enemy.TestEnemy
 import containers.player.Player
 import program.*
 
@@ -36,16 +34,12 @@ open class GameScene : Scene() {
 
         player = injector.get()
         resetGame()
-
         mapView.addChild(player)
-        mapView.addChild(TestEnemy(injector.get(), injector.get(), injector.get(), injector.get(), Point(50, 50)))
 
         keys.down {
             when (it.key) {
                 Key.ESCAPE -> exitToMenu()
-                Key.R -> resetGame()
-                Key.Z -> player.jump()
-                else -> Unit
+                else -> {}
             }
         }
     }
