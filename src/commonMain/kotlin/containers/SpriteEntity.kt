@@ -3,11 +3,11 @@ package containers
 import com.soywiz.korge.view.Sprite
 import com.soywiz.korge.view.addTo
 import com.soywiz.korge.view.anchor
-import program.AssetManager
+import program.IAssetManager
 import program.LevelManager
 import program.SoundManager
 
-open class SpriteEntity(sprite: Sprite, assets: AssetManager, soundManager: SoundManager, levelManager: LevelManager)
+open class SpriteEntity(sprite: Sprite, assets: IAssetManager, soundManager: SoundManager, levelManager: LevelManager)
     : GameEntity(assets, soundManager, levelManager) {
 
     init {

@@ -1,6 +1,7 @@
 package containers.enemy
 
 import com.soywiz.korge.view.BaseImage
+import com.soywiz.korge.view.RectBase
 import com.soywiz.korge.view.onCollision
 import com.soywiz.korge.view.position
 import com.soywiz.korma.geom.XY
@@ -10,7 +11,7 @@ import program.*
 
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class Enemy(
-    assets: AssetManager,
+    assets: IAssetManager,
     soundManager: SoundManager,
     levelManager: LevelManager,
     position: XY

@@ -17,5 +17,5 @@ buildscript {
 apply<KorgeGradlePlugin>()
 
 korge {
-	id = "com.redhue.korge-boot"
+	id = "com.redhue.korgeboot"
 }

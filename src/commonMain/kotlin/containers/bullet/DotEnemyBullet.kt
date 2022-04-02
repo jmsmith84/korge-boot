@@ -1,19 +1,21 @@
 package containers.bullet
 
+import com.soywiz.korge.view.RectBase
 import com.soywiz.korma.geom.XY
-import program.AssetManager
+import program.IAssetManager
 import program.LevelManager
 import program.SoundManager
 
 class DotEnemyBullet(
-    assets: AssetManager,
+    assets: IAssetManager,
     soundManager: SoundManager,
     levelManager: LevelManager,
+    bulletRect: RectBase,
     spawn: XY,
     target: XY,
     shotSpeed: Double = 100.0
-) : DotBullet(assets, soundManager, levelManager, spawn, target, shotSpeed), EnemyBullet {
+) : DotBullet(assets, soundManager, levelManager, bulletRect, spawn, target, shotSpeed), EnemyBullet {
     init {
-        addChild(assets.enemyBulletRect.clone())
+        addChild(assets.enemyBulletRect)
     }
 }

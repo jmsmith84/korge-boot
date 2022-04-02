@@ -5,13 +5,13 @@ import com.soywiz.korge.view.Container
 import com.soywiz.korge.view.HitTestDirection
 import com.soywiz.korma.geom.Point
 import com.soywiz.korma.geom.Rectangle
-import program.AssetManager
+import program.IAssetManager
 import program.LevelManager
 import program.SoundManager
 import utility.rectHitTest
 
 open class GameEntity(
-    protected val assets: AssetManager,
+    protected val assets: IAssetManager,
     protected val soundManager: SoundManager,
     protected val levelManager: LevelManager,
     protected var hp: UInt = 1u

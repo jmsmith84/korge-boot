@@ -7,8 +7,8 @@ import com.soywiz.korio.dynamic.dyn
 import containers.SpriteEntity
 import containers.bullet.EnemyBullet
 import containers.enemy.Enemy
-import program.AssetManager
 import program.GameState
+import program.IAssetManager
 import program.LevelManager
 import program.SoundManager
 
@@ -16,7 +16,7 @@ const val PLAYER_NAME = "PLAYER"
 
 abstract class Player(
     sprite: Sprite,
-    assets: AssetManager,
+    assets: IAssetManager,
     soundManager: SoundManager,
     levelManager: LevelManager
 ) : SpriteEntity(sprite, assets, soundManager, levelManager) {
@@ -51,4 +51,6 @@ abstract class Player(
         hp = initialHp
         isDead = false
     }
+
+    abstract fun fire()
 }
