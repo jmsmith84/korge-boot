@@ -1,14 +1,17 @@
 package utility
 
-import components.movement.MoveDirection
+import com.soywiz.kds.iterators.fastForEachWithIndex
 import com.soywiz.klock.TimeSpan
+import com.soywiz.korge.tiled.TiledMap
 import com.soywiz.korge.tiled.TiledMapView
-import com.soywiz.korge.view.HitTestDirection
-import com.soywiz.korge.view.View
-import com.soywiz.korma.geom.Point
+import com.soywiz.korge.view.*
+import com.soywiz.korge.view.tiles.TileMap
+import com.soywiz.korge.view.tiles.tileMap
 import com.soywiz.korma.geom.Rectangle
+import com.soywiz.korma.geom.Size
 import com.soywiz.korma.geom.SizeInt
 import com.soywiz.korma.geom.shape.Shape2d
+import com.soywiz.korma.math.roundDecimalPlaces
 import program.Log
 
 operator fun Shape2d.Rectangle.times(scale: Double): Shape2d.Rectangle {
@@ -29,38 +32,6 @@ fun ByteArray.toUInt(): UInt {
         result = result or this[i].toUInt().shl(Byte.SIZE_BITS * i)
     }
     return result
-}
-
-fun Point.isMovingLeft(): Boolean {
-    return x < 0.0
-}
-
-fun Point.isMovingRight(): Boolean {
-    return x > 0.0
-}
-
-fun Point.isMovingUp(): Boolean {
-    return y < 0.0
-}
-
-fun Point.isMovingDown(): Boolean {
-    return y > 0.0
-}
-
-fun Point.getDirections(): Set<MoveDirection> {
-    val set = mutableSetOf<MoveDirection>()
-
-    if (isMovingLeft()) {
-        set.add(MoveDirection.LEFT)
-    } else if (isMovingRight()) {
-        set.add(MoveDirection.RIGHT)
-    }
-    if (isMovingDown()) {
-        set.add(MoveDirection.DOWN)
-    } else if (isMovingUp()) {
-        set.add(MoveDirection.UP)
-    }
-    return set
 }
 
 fun TiledMapView.viewHitTest(view: View, direction: HitTestDirection = HitTestDirection.ANY): View? {
@@ -111,3 +82,34 @@ fun TiledMapView.rectHitTest(rect: Rectangle, direction: HitTestDirection = HitT
     }
     return null
 }
+
+fun TiledMapView.recreateTileLayers(smoothing: Boolean) {
+    fastForEachChild {
+        if (it is TileMap) {
+            it.removeFromParent()
+        }
+    }
+    tiledMap.allLayers.fastForEachWithIndex { _, layer ->
+        if (layer is TiledMap.Layer.Tiles) {
+            val view: View = tileMap(
+                map = layer.map,
+                tileset = tileset,
+                smoothing = smoothing,
+                orientation = tiledMap.data.orientation,
+                staggerAxis = tiledMap.data.staggerAxis,
+                staggerIndex = tiledMap.data.staggerIndex,
+                tileSize = Size(tiledMap.tilewidth.toDouble(), tiledMap.tileheight.toDouble()),
+            )
+            view.visible(layer.visible)
+                .name(layer.name.takeIf { it.isNotEmpty() })
+                .xy(layer.offsetx, layer.offsety)
+                .alpha(layer.opacity)
+                .also { it.addProps(layer.properties) }
+        }
+    }
+}
+
+fun Double.getSecondsDisplay(): String {
+    return roundDecimalPlaces(1).toString().padStart(6, '0').padEnd(6, '0')
+}
+

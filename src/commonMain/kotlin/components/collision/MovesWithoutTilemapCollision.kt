@@ -1,13 +1,9 @@
 package components.collision
 
-import com.soywiz.klock.DateTime
 import com.soywiz.klock.TimeSpan
 import com.soywiz.korge.component.UpdateComponent
-import com.soywiz.korge.view.HitTestDirection
 import containers.GameEntity
-import program.LevelManager
-import program.Log
-import utility.*
+import utility.getDeltaScale
 
 class MovesWithoutTilemapCollision(
     override val view: GameEntity
@@ -15,11 +11,11 @@ class MovesWithoutTilemapCollision(
     override fun update(dt: TimeSpan) {
         val delta = getDeltaScale(dt)
 
-        if (view.move.isMovingLeft() || view.move.isMovingRight()) {
-            view.x += view.move.x * delta
+        if (view.isMovingLeft() || view.isMovingRight()) {
+            view.x += view.move.x * delta * view.speedModifier
         }
-        if (view.move.isMovingUp() || view.move.isMovingDown()) {
-            view.y += view.move.y * delta
+        if (view.isMovingUp() || view.isMovingDown()) {
+            view.y += view.move.y * delta * view.speedModifier
         }
     }
 }

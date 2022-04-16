@@ -6,8 +6,8 @@ import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 import com.soywiz.korio.async.launchImmediately
-import program.IAssetManager
-import program.LevelManager
+import com.soywiz.korio.util.OS
+import program.AssetManager
 
 enum class MainMenuOptions {
     START_GAME,
@@ -15,8 +15,7 @@ enum class MainMenuOptions {
 }
 
 open class MenuScene(private val title: String, private val fontsize: Double = 24.0) : Scene() {
-    private lateinit var assets: IAssetManager
-    private lateinit var levelManager: LevelManager
+    private lateinit var assets: AssetManager
 
     private var selection: MainMenuOptions = MainMenuOptions.START_GAME
     private val unselectedColor = Colors.DARKGRAY
@@ -24,12 +23,11 @@ open class MenuScene(private val title: String, private val fontsize: Double = 2
 
     override suspend fun Container.sceneInit() {
         assets = injector.get()
-        levelManager = injector.get()
-
-        val uiFont = assets.defaultFont
+        val uiFont = assets.mainFont
 
         text(title) {
             font = uiFont
+            color = Colors.BLACK
             y = 24.0
             centerXOnStage()
         }
@@ -45,15 +43,17 @@ open class MenuScene(private val title: String, private val fontsize: Double = 2
                 }
             }
         }
-        text("QUIT") {
-            textSize = fontsize
-            font = uiFont
-            centerOnStage()
-            y += 50
-            addUpdater {
-                color = when (selection) {
-                    MainMenuOptions.QUIT -> selectedColor
-                    else -> unselectedColor
+        if (!hidesExitOption()) {
+            text("QUIT") {
+                textSize = fontsize
+                font = uiFont
+                centerOnStage()
+                y += 50
+                addUpdater {
+                    color = when (selection) {
+                        MainMenuOptions.QUIT -> selectedColor
+                        else -> unselectedColor
+                    }
                 }
             }
         }
@@ -71,7 +71,7 @@ open class MenuScene(private val title: String, private val fontsize: Double = 2
     private fun chooseOption() {
         when (selection) {
             MainMenuOptions.START_GAME -> launchImmediately {
-                    sceneContainer.changeTo<GameScene>()
+                sceneContainer.changeTo<GameScene>()
             }
             MainMenuOptions.QUIT -> exitGame()
         }
@@ -80,7 +80,7 @@ open class MenuScene(private val title: String, private val fontsize: Double = 2
     private fun cursorDown() {
         selection = when (selection) {
             MainMenuOptions.QUIT -> MainMenuOptions.START_GAME
-            MainMenuOptions.START_GAME -> MainMenuOptions.QUIT
+            MainMenuOptions.START_GAME -> if (hidesExitOption()) MainMenuOptions.START_GAME else MainMenuOptions.QUIT
         }
     }
 
@@ -90,5 +90,9 @@ open class MenuScene(private val title: String, private val fontsize: Double = 2
 
     private fun exitGame() {
         views.gameWindow.close()
+    }
+
+    private fun hidesExitOption(): Boolean {
+        return OS.isIos || OS.isAndroid || OS.isJs
     }
 }

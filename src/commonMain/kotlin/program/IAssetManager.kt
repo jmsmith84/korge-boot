@@ -1,14 +1,16 @@
 package program
 
+import com.soywiz.korau.sound.Sound
 import com.soywiz.korge.tiled.TiledMap
-import com.soywiz.korge.view.RectBase
+import com.soywiz.korge.tiled.TiledMapData
 import com.soywiz.korim.font.Font
 
 interface IAssetManager {
-    var defaultFont: Font
-    var levels: MutableMap<UShort, TiledMap>
-    var bulletRect: RectBase
-    var enemyBulletRect: RectBase
+    var tileSets: MutableList<TiledMap.TiledTileset>
+    var levels: MutableMap<UShort, TiledMapData>
+    var music: MutableMap<UShort, Sound>
+
+    var mainFont: Font
 
     fun getResourceSubdirs(config: Config): Map<String, String> {
         return mapOf(

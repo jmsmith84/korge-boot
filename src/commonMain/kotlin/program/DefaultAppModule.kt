@@ -6,7 +6,7 @@ import com.soywiz.korma.geom.*
 import scenes.MenuScene
 
 open class DefaultAppModule(override val title: String = "KorGE Boot Game", windowScale: Double = 2.0) : Module() {
-    private val virtualScreenSize = SizeInt(Size(Point(320, 360)))
+    protected open val virtualScreenSize = SizeInt(Size(Point(320, 360)))
 
     override val mainScene = MenuScene::class
     override val windowSize = virtualScreenSize * windowScale
@@ -19,5 +19,6 @@ open class DefaultAppModule(override val title: String = "KorGE Boot Game", wind
         mapSingleton { SoundManager() }
         mapSingleton { Config() }
         mapSingleton { LevelManager(get()) }
+        mapSingleton { AssetManager() }
     }
 }

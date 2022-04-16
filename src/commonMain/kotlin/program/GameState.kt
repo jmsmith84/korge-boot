@@ -1,7 +1,6 @@
 package program
 
 object GameState {
-    var score: Int = 0
-    var hiScore: Int = 0
-    var timeAlive: Double = 0.0
+    var score: ULong = 0u
+    var hiScore: ULong = 0u
 }

@@ -1,7 +1,5 @@
 package utility.timer
 
-import com.soywiz.klock.TimeSpan
-
 interface Timer {
     fun restart(): Timer
     fun start(): Timer
@@ -9,4 +7,5 @@ interface Timer {
     fun isFinished(): Boolean
     fun isRunning(): Boolean
     fun reset(): Timer
+    fun destroy()
 }

@@ -4,11 +4,11 @@ import com.soywiz.klock.TimeSpan
 import com.soywiz.klock.seconds
 import com.soywiz.korge.component.FixedUpdateComponent
 import containers.GameEntity
-import containers.enemy.Enemy
+import containers.enemy.SpriteEnemy
 import containers.player.PLAYER_NAME
 
 class ShootsBulletsAtPlayer(
-    override val view: Enemy,
+    override val view: SpriteEnemy,
     private val bullet: GameEntity,
     step: TimeSpan = 2.seconds,
     maxAccumulated: Int = 10

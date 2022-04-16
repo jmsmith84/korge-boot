@@ -5,4 +5,6 @@ object Settings {
     var musicEnabled: Boolean = true
     var sfxVolume: Double = 0.4
     var musicVolume: Double = 0.5
+    var spriteSmoothing: Boolean = false
+    var tilemapSmoothing: Boolean = false
 }
